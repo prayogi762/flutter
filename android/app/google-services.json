@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "631886821632",
+    "project_id": "mymakum",
+    "storage_bucket": "mymakum.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:631886821632:android:69860e6c82a1de96d6dbe5",
+        "android_client_info": {
+          "package_name": "com.example.my_wakum"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfS5papSqOrw7IfRsjEHk-Wa_KkyJV4os"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
