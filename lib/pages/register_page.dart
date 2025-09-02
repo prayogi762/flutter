@@ -38,7 +38,7 @@ class _RegisterPageState extends State<RegisterPage> {
             borderRadius: BorderRadius.circular(16),
             boxShadow: const [BoxShadow(blurRadius: 10, color: Colors.black12)],
           ),
-          child: Column(
+          child: Column(  
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text('Daftar Akun Baru', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),

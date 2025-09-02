@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../services/auth_service.dart';
+import 'home_page.dart';
+import 'admin_dashboard.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -9,19 +11,32 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  String errorMessage = '';
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  Future<void> login() async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
+  Future<void> _login() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    final user = await AuthService.login(email, password);
+
+    if (user != null) {
+      // cek apakah admin berdasarkan email
+      if (email == "yazdiganteng@gmail.com") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const AdminDashboard()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const HomePage()),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Login gagal, coba lagi")),
       );
-      Navigator.pushReplacementNamed(context, '/home');
-    } catch (e) {
-      setState(() => errorMessage = e.toString());
     }
   }
 
@@ -41,29 +56,30 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('Login Penjualan', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              const Text(
+                "Login Penjualan",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 20),
               TextField(
-                controller: emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
+                controller: _emailController,
+                decoration: const InputDecoration(labelText: "Email"),
               ),
               const SizedBox(height: 12),
               TextField(
-                controller: passwordController,
+                controller: _passwordController,
                 obscureText: true,
-                decoration: const InputDecoration(labelText: 'Password'),
+                decoration: const InputDecoration(labelText: "Password"),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(onPressed: login, child: const Text('Login')),
+              ElevatedButton(
+                onPressed: _login,
+                child: const Text("Login"),
+              ),
               TextButton(
                 onPressed: () => Navigator.pushNamed(context, '/register'),
-                child: const Text('Belum punya akun? Daftar di sini'),
+                child: const Text("Belum punya akun? Daftar di sini"),
               ),
-              if (errorMessage.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: 12),
-                  child: Text(errorMessage, style: const TextStyle(color: Colors.red)),
-                ),
             ],
           ),
         ),
